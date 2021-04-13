@@ -1,0 +1,221 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+
+	<title>Register New User Form</title>
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>
+		$( function () {
+			setTimeout( function () { $( ".registrationError" ).fadeOut( 5000 ); }, 8000 )
+		} )
+
+
+
+
+
+	</script>
+
+
+	<style>
+		[placeholder]:focus::-webkit-input-placeholder {
+			transition: text-indent 0.5s 0.5s ease;
+			text-indent: -150%;
+			opacity: 1;
+		}
+
+		.input-field:focus {
+			border-color: green;
+		}
+
+		.input-icons i {
+			position: absolute;
+		}
+
+		.input-icons {
+			margin-bottom: 10px;
+		}
+
+		.icon {
+			font-size: 20px;
+			margin-bottom: 10px;
+			display: flex;
+			justify-content: start;
+			color: rgb(7, 8, 73);
+		}
+
+		.input-field {
+			font-family: monospace;
+			font-size: large;
+			border: none;
+			border-bottom: 1px solid #136a95;
+			outline: none;
+			background-color: #8fd6fa;
+			text-align: center;
+
+			width: 300px;
+		}
+
+		#zoom {
+			transition: transform .2s;
+			/* Animation */
+			margin: 0 auto;
+
+		}
+
+		#zoom:hover {
+			transform: scale(1.1);
+
+		}
+	</style>
+
+</head>
+
+<body style="background-color: #2C313C;font-family:monospace ;font-size:large">
+	<div class=" container col-md-4 col-md-offset-4" style="margin-top:50px;">
+		<div class="panel panel-info">
+			<div class="panel panel-heading">
+				<i aria-hidden="true" class="fa fa-registered" style="margin-right:10px  ;font-size: 20;"></i>
+				<strong>Registration </strong>
+			</div>
+
+			<div class="panel-body"
+				style="margin: 15px; padding: 15px; border-style:solid; border-color: #d9edf7;background-color: #8fd6fa;">
+
+				<form method="POST" th:action="@{/register/processRegistrationForm}" th:object="${WebUser}">
+
+					<div class="form-group">
+						<div class="col-xs-15">
+							<div class="registrationError">
+
+								<!-- Check for registration error -->
+								<div th:if="${registrationError}">
+
+									<div th:if="${registrationError}"
+										class="alert alert-danger col-xs-offset-1 col-xs-10">
+										<span th:text="${registrationError}"></span>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="fom-control fa"
+						style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+						<div class="input-icons">
+							<span><i class="fa fa-user icon"></i>
+							</span>
+							<input class="input-field" placeholder="username (*)" th:errorclass="fieldError"
+								th:field="*{userName}" type="text" />
+							<br>
+							<div class="registrationError" th:if="${#fields.hasErrors('userName')}">
+								<ul>
+									<li th:each="err : ${#fields.errors('userName')}" th:text="'User name ' + ${err}">
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="fom-control fa"
+						style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+						<div class="input-icons">
+							<span><i class="fa fa-lock icon"></i>
+							</span>
+							<input class="input-field" placeholder="password (*)" th:errorclass="fieldError"
+								th:field="*{password}" type="password" />
+							<br>
+						</div>
+						<div class="registrationError" th:if="${#fields.hasErrors('password')}">
+							<ul>
+								<li th:each="err : ${#fields.errors('password')}" th:text="'Password ' + ${err}"></li>
+							</ul>
+						</div>
+					</div>
+					<div class="fom-control fa"
+						style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+						<div class="input-icons">
+							<span><i class="fa fa-lock icon"></i>
+							</span>
+							<input class="input-field" placeholder="confirm password (*)" th:errorclass="fieldError"
+								th:field="*{matchingPassword}" type="password" />
+							<div class="text-danger" style="margin-bottom: 25px"
+								th:if="${#fields.hasErrors('matchingPassword')}">
+								<ul>
+									<li th:each="err : ${#fields.errors('matchingPassword')}"
+										th:text="'Password ' + ${err}"></li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="fom-control fa"
+						style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+						<div class="input-icons">
+							<span><i class="fa fa-pencil icon"></i>
+							</span>
+							<input class="input-field" placeholder="last name (*)" th:errorclass="fieldError"
+								th:field="*{lastName}" type="text" />
+							<div class="text-danger" style="margin-bottom: 25px"
+								th:if="${#fields.hasErrors('lastName')}">
+								<ul>
+									<li th:each="err : ${#fields.errors('lastName')}" th:text="'Last name ' + ${err}">
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="fom-control fa"
+						style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+						<div class="input-icons">
+							<span><i class="fa fa-envelope icon"></i>
+							</span>
+							<input class="input-field" placeholder="email (*)" th:errorclass="fieldError"
+								th:field="*{email}" type="text" />
+							<div class="text-danger" style="margin-bottom: 25px" th:if="${#fields.hasErrors('email')}">
+								<ul>
+									<li th:each="err : ${#fields.errors('email')}" th:text="'Email ' + ${err}"></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="fom-control fa" style="margin-left: 50px;">
+						<div class="input-icons">
+							<span><i class="fa fa-list-alt icon"></i>
+							</span>
+
+							<select
+								style="color: black;font-family:monospace; font-size:medium ;margin-left: 20px ;width: 280px;"
+								th:field="*{formRole}" class="input-field">
+								<option th:each="role :${roles}" th:value="${role.key}" th:text="${role.value}">
+								</option>
+							</select>
+							<br>
+
+
+
+						</div>
+
+
+					</div>
+
+					<div style="display: flex;justify-content: center; margin-top: 20px;">
+						<button class=" Button btn-info" id="zoom" type="submit">Register</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

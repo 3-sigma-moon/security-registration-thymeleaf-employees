@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+    <title>My Custom Login Page</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $( function () {
+            setTimeout( function () { $( "#logoutMessage" ).fadeOut( 3000 ); }, 5000 )
+        } )
+        $( function () {
+            setTimeout( function () { $( "#errorMessage" ).fadeOut( 3000 ); }, 5000 )
+        } )
+
+
+    </script>
+
+
+    <style>
+        [placeholder]:focus::-webkit-input-placeholder {
+            transition: text-indent 0.5s 0.5s ease;
+            text-indent: -150%;
+            opacity: 1;
+        }
+
+        .input-field:focus {
+            border-color: green;
+        }
+
+        .input-icons i {
+            position: absolute;
+        }
+
+        .input-icons {
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: start;
+            color: rgb(7, 8, 73);
+        }
+
+        .input-field {
+            font-family: monospace;
+            font-size: large;
+            border: none;
+            border-bottom: 1px solid #136a95;
+            outline: none;
+            background-color: #8fd6fa;
+            text-align: center;
+        }
+
+        #zoom {
+            transition: transform .2s;
+            /* Animation */
+            margin: 0 auto;
+
+        }
+
+        #zoom:hover {
+            transform: scale(1.1);
+
+        }
+    </style>
+
+</head>
+
+<body style="background-color: #2C313C;font-family:monospace ;font-size:large">
+    <div class=" container col-md-3 col-md-offset-4" style="margin-top:80px;">
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <i style="margin-right:10px  ;font-size: 20;" class="fa fa-sign-in" aria-hidden="true"></i>
+                <strong>Sing In</strong>
+            </div>
+            <div class="panel-body"
+                style="margin: 10px; padding: 10px; border-style:solid; border-color: #d9edf7;background-color: #8fd6fa;">
+                <form th:action="@{/authenticateTheUser}" method="POST">
+                    <div th:if="${param.error}">
+
+                        <i id="errorMessage" class="alert alert-info" style="margin-top:5px;font-size:15px;margin-bottom:15px;
+                                        color: rgb(236, 10, 21);display: flex; justify-content: center;opacity: 80%; ">
+                            <i class="fa fa-exclamation-triangle"
+                                style="color: rgb(236, 10, 21); margin-right: 10px;"></i>
+                            <strong>Invalid User name / Password</strong>
+
+
+                        </i>
+                    </div>
+                    <div th:if="${(param.logout)}">
+                        <div id="logoutMessage">
+
+                            <i class="alert alert-success" style="margin-top:5px;font-size:15px;margin-bottom:15px;
+                                        color: rgb(0, 0, 0);display: flex; justify-content: center;opacity: 80%; ">
+                                <i class="fa fa-check" style="color: green; margin-right: 10px;"></i>
+                                <strong>You have been logged out.</strong>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="fom-control fa"
+                        style="justify-content: center; display: flex;margin: 10px;padding: 10px;">
+                        <div class="input-icons">
+                            <span><i class="fa fa-user icon"></i>
+                            </span>
+                            <input class="input-field" placeholder="User Name" type="text" name="username" />
+                        </div>
+                    </div>
+
+                    <div class="fom-control fa" style="justify-content: center; display: flex;padding: 10px; ">
+                        <div class="input-icons">
+                            <span><i class="fa fa-lock icon"></i>
+                            </span>
+                            <input class="input-field" placeholder="Password" type="password" name="password" />
+                        </div>
+                    </div>
+                    <span style="display: flex;justify-content: center;">
+                        <button type="submit" class=" Button btn-info" id="zoom">Login</button>
+                    </span>
+                    <!-- Manually Adding Tokens for CSRF.
+                                    if we aren't using the spring  form:form Tag
+                                    -->
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                </form>
+            </div>
+            <a th:href="@{/register/showRegistrationForm}" class="btn btn-default"
+               style="background-color:#70D8FB;font-family:Source Code Pro;color:white;font-size:medium" role="button" aria-pressed="true">Or register Here</a>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

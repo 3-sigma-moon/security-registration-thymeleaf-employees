@@ -1,0 +1,169 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <style>
+    body {
+      background: #192226 !important;
+    }
+
+    .navbar-inverse {
+      background: #222B31 !important;
+      border-bottom: 4px solid #8C53BE !important;
+    }
+
+    .navbar-brand {
+      font: 12px Lato !important;
+      text-transform: uppercase;
+      color: #fff !important;
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+
+    .nav {
+      margin-bottom: 0px;
+    }
+
+    .nav.a {
+      font: 500 11px Lato;
+      letter-spacing: 2px;
+      padding: 10px !important;
+      color: #a3bfc6 !important;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .nav.a:hover {
+      color: #fff !important;
+      background-color: #8C53BE;
+    }
+
+    #li.a:hover {
+      color: #fff !important;
+      background-color: #8C53BE;
+    }
+
+    .nav.li {
+      position: relative;
+    }
+
+
+    .navbar-inverse .navbar-toggle {
+      border: none;
+    }
+
+    .navbar-collapse {
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .navbar-inverse .navbar-toggle:hover {
+      background: transparent !important;
+    }
+
+    .navbar-inverse .navbar-toggle:focus {
+      background: transparent !important;
+    }
+
+    .navbar-inverse .navbar-toggle:active {
+      background: transparent !important;
+    }
+
+    .icon-bar {
+      background: #a3bfc6 !important;
+    }
+
+    .hover {
+      display: block;
+      position: absolute;
+      width: 0%;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+      background-color: #8C53BE !important;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    @media (max-width: 667px) {
+      .nav {
+        padding-bottom: 10px;
+      }
+
+      .nav.a {
+        padding: 10px !important;
+      }
+    }
+
+
+    @media (max-width: 480px) {
+      .nav {
+        padding-bottom: 10px;
+      }
+    }
+  </style>
+
+  <script>
+
+    $( ".li" ).hover(
+      function () {
+        $( this ).find( ".span" ).stop().animate( {
+          width: "100%",
+          opacity: "1",
+        }, 400, function () {
+        } )
+      }, function () {
+        $( this ).find( ".span" ).stop().animate( {
+          width: "0%",
+          opacity: "0",
+        }, 400, function () {
+        } )
+      }
+    );
+
+
+  </script>
+
+
+</head>
+
+<body>
+
+
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li id="li"><a style=" font-size: 20;" th:href="@{/}">
+              <i style="color: #8455C0;" class="fa fa-home" aria-hidden="true"></i> Home
+            </a>
+            <span class="hover"></span>
+          </li>
+          <li><a class="navbar-brand" style="font-size: 20;" th:href="@{/employee/list}">
+              <span> <i class="fa fa-user" style="color:#8455C0" aria-hidden="true"></i></span>
+              Employees
+            </a>
+            <span class="hover"></span>
+          </li>
+          <li><a class="navbar-brand" style="justify-content: center ; display: block;font-size: 25">
+              <form th:action="@{/logout}" method="POST">
+                <button data-toggle="tooltip" data-placement="top" title="Logout" style="border-style:dashed;"
+                  type="submit" value="Logout">
+                  <i class="fa fa-sign-out" style="color: #EF5350;"></i>
+                </button>
+              </form>
+            </a><span class="hover"></span></li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.thymeleaf.org/extras/spring-security ">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: #333;
+        }
+
+        .output {
+            text-align: center;
+            font-family: 'Source Code Pro', monospace;
+            color: #EDD770;
+
+        }
+
+        .output h1 {
+            font-size: 30px;
+        }
+
+        /* Cursor Styling */
+
+        .cursor::after {
+            content: '';
+            display: inline-block;
+            margin-left: 3px;
+            background-color: white;
+            animation-name: blink;
+            animation-duration: 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        h1.cursor::after {
+            height: 24px;
+            width: 13px;
+        }
+
+        p.cursor::after {
+            height: 13px;
+            width: 6px;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            49% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+    <script>
+        // values to keep track of the number of letters typed, which quote to use. etc. Don't change these values.
+        var i = 0,
+            a = 0,
+            isBackspacing = false,
+            isParagraph = false;
+
+        // Typerwrite text content. Use a pipe to indicate the start of the second line "|".  
+        var textArray = [
+            "WWelcome To the Employee Manger Application|🎉 Happy to see you! 🎉 😁",
+            "This is a CRUD app In progress... | Create Read Update Delete",
+            "Depending on User it integrates Security and some restrictions|Admin Manager Employee ",
+            "You can |See all employees available in the database",
+            "You can|Search for an existing Employee",
+            "You can|Add a new Employee to the database",
+            "You can|Update an existing Employee",
+            "Many features are coming up| This app development is in progress the best is yet to come",
+
+        ];
+
+        // Speed (in milliseconds) of typing.
+        var speedForward = 100, //Typing Speed
+            speedWait = 1000, // Wait between typing and backspacing
+            speedBetweenLines = 1000, //Wait between first and second lines
+            speedBackspace = 25; //Backspace Speed
+
+        //Run the loop
+        typeWriter( "output", textArray );
+
+        function typeWriter( id, ar ) {
+            var element = $( "#" + id ),
+                aString = ar[ a ],
+                eHeader = element.children( "h1" ), //Header element
+                eParagraph = element.children( "p" ); //Subheader element
+
+            // Determine if animation should be typing or backspacing
+            if ( !isBackspacing ) {
+
+                // If full string hasn't yet been typed out, continue typing
+                if ( i < aString.length ) {
+
+                    // If character about to be typed is a pipe, switch to second line and continue.
+                    if ( aString.charAt( i ) == "|" ) {
+                        isParagraph = true;
+                        eHeader.removeClass( "cursor" );
+                        eParagraph.addClass( "cursor" );
+                        i++;
+                        setTimeout( function () { typeWriter( id, ar ); }, speedBetweenLines );
+
+                        // If character isn't a pipe, continue typing.
+                    } else {
+                        // Type header or subheader depending on whether pipe has been detected
+                        if ( !isParagraph ) {
+                            eHeader.text( eHeader.text() + aString.charAt( i ) );
+                        } else {
+                            eParagraph.text( eParagraph.text() + aString.charAt( i ) );
+                        }
+                        i++;
+                        setTimeout( function () { typeWriter( id, ar ); }, speedForward );
+                    }
+
+                    // If full string has been typed, switch to backspace mode.
+                } else if ( i == aString.length ) {
+
+                    isBackspacing = true;
+                    setTimeout( function () { typeWriter( id, ar ); }, speedWait );
+
+                }
+
+                // If backspacing is enabled
+            } else {
+
+                // If either the header or the paragraph still has text, continue backspacing
+                if ( eHeader.text().length > 0 || eParagraph.text().length > 0 ) {
+
+                    // If paragraph still has text, continue erasing, otherwise switch to the header.
+                    if ( eParagraph.text().length > 0 ) {
+                        eParagraph.text( eParagraph.text().substring( 0, eParagraph.text().length - 1 ) );
+                    } else if ( eHeader.text().length > 0 ) {
+                        eParagraph.removeClass( "cursor" );
+                        eHeader.addClass( "cursor" );
+                        eHeader.text( eHeader.text().substring( 0, eHeader.text().length - 1 ) );
+                    }
+                    setTimeout( function () { typeWriter( id, ar ); }, speedBackspace );
+
+                    // If neither head or paragraph still has text, switch to next quote in array and start typing.
+                } else {
+
+                    isBackspacing = false;
+                    i = 0;
+                    isParagraph = false;
+                    a = ( a + 1 ) % ar.length; //Moves to next position in array, always looping back to 0
+                    setTimeout( function () { typeWriter( id, ar ); }, 50 );
+
+                }
+            }
+        }
+    </script>
+    <title>Company Home Page</title>
+
+</head>
+
+<body style="background-color:#323844">
+    <th:block layout:insert="header" />
+
+    <br>
+    <br>
+    <h2 class="panel panel-heading"
+        style="font-size:large;display: flex; justify-content: center;background-color:#2C313A;color:darkgray;">
+
+        Home Page</h2>
+
+    <div class=" panel panel-primary" style="background-color:#878383">
+        <div>
+
+            <div class="container py-5" style="font-size:25px;color:#7E57C1">
+                <div class="output" id="output">
+                    <h1 class="cursor"></h1>
+                    <p style="color: #7E57C1;"></p>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div style=" background-color: #EFEFEF;color:#ABB2BF;width: 30pc;;border-color:#7E57C2 ; border-style:dashed
+                ;">
+
+                <span class="label label-heading" style="  background-color: #bbbbbb;margin: 10px; font-size:medium; padding: 10px;display: flex;
+                    justify-content: start;">
+
+                    User Name:
+                    <span sec:authentication=" name"></span>
+
+
+                </span>
+                <span class="label label-heading" style=" background-color: #bbbbbb;margin: 10px; font-size: medium;padding: 10px;display: flex;
+                    justify-content: start;">
+
+                    User Role (s):
+                    <span sec:authentication="principal.authorities"></span>
+
+                </span>
+
+                <!-- <div th:if="${session.user}">
+                    <p th:text="'Email: ' + ${session.user.email}" style="color:blueviolet">
+                    </p>
+                </div> -->
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <hr>
+
+
+    <div style="color:#868383;font-size:small;font-family:monospace;display: flex; justify-content: center;"
+        sec:authorize="hasRole('MANAGER')">
+
+        <!-- Add a link to point to /leaders ... this is for the managers -->
+
+        <p>
+            <a style="color:#EDD770" th:href="@{/leaders}">Leadership Meeting</a>
+            (Only for Manager peeps)
+        </p>
+
+    </div>
+
+    <div style="color:#868383;font-size:small;font-family:monospace;display: flex; justify-content: center"
+        sec:authorize="hasRole('ADMIN')">
+
+        <!-- Add a link to point to /systems ... this is for the admins -->
+
+        <p>
+            <a style="color:#EDD770;" th:href="@{/systems}">IT Systems Meeting</a>
+            (Only for Admin peeps)
+        </p>
+
+    </div>
+
+    <br>
+
+
+
+</body>
+
+</html>
